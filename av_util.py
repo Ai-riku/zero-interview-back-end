@@ -26,7 +26,7 @@ class VideoRecorder():
     def record(self):
         while self.open:
             ret, video_frame = self.video_cap.read()
-            if not ret: continue
+            if not ret: break
             self.video_out.write(video_frame)
             self.current_frame = video_frame
             self.frame_counts += 1
