@@ -1,14 +1,16 @@
 from __future__ import print_function, division
 from moviepy.editor import VideoFileClip, AudioFileClip
+
 import cv2
 import pyaudio
 import wave
 import threading
 import time
 import os
+import config
 
 class VideoRecorder():  
-    def __init__(self, name="temp_video.avi", camindex=0, fourcc="MJPG"):
+    def __init__(self, name=config.temp_video_path, camindex=0, fourcc="MJPG"):
         self.open = True
         self.device_index = camindex
         self.video_filename = name
@@ -43,7 +45,7 @@ class VideoRecorder():
         video_thread.start()
 
 class AudioRecorder():
-    def __init__(self, filename="audio_output.wav", rate=44100, fpb=1024, channels=2):
+    def __init__(self, filename=config.audio_path, rate=44100, fpb=1024, channels=2):
         self.open = True
         self.rate = rate
         self.frames_per_buffer = fpb
@@ -119,20 +121,16 @@ def stop_AVrecording(filename="test"):
         time.sleep(1)
     
     # Merging audio and video signal    
-    video_file_path = 'temp_video.avi'
-    audio_file_path = 'audio_output.wav'
+    video_file_path = config.temp_video_path
+    audio_file_path = config.audio_path
     video_clip = VideoFileClip(video_file_path).set_fps(recorded_fps)
     audio_clip = AudioFileClip(audio_file_path)
     synchronized_clip = video_clip.set_audio(audio_clip)
     synchronized_clip.write_videofile(filename, codec="libx264", audio_codec="aac")
 
-def file_manager(filename="test"):
-    "Required and wanted processing of final files"
-    local_path = os.getcwd()
-    if os.path.exists(str(local_path) + "/temp_video.avi"):
-        os.remove(str(local_path) + "/temp_video.avi")
-    if os.path.exists(str(local_path) + "/" + filename + ".avi"):
-        os.remove(str(local_path) + "/" + filename + ".avi")
+def file_manager(filepath="test"):
+    if os.path.exists(config.temp_video_path):
+        os.remove(config.temp_video_path)
 
 def video_capture():
     record_duration = 5.0
@@ -145,7 +143,7 @@ def video_capture():
             frame = buffer.tobytes()
             yield(b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    stop_AVrecording("av_output.avi")
+    stop_AVrecording(config.video_path)
     file_manager()
 
 

@@ -23,15 +23,16 @@ def prompt_to_text(prompt):
     print(result.choices[0].message.content)
     return result.choices[0].message.content
 
-def transcribe():
+def transcribe(audio_path):
     client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
-    audio_file= open("audio_output.wav", "rb")
+    audio_file= open(audio_path, "rb")
     transcription = client.audio.transcriptions.create(
         model="whisper-1", 
         file=audio_file
     )
     print(transcription.text)
+    return transcription.text
 
 if __name__=="__main__":
     transcribe()
