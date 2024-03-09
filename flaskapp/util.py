@@ -17,7 +17,7 @@ def interview():
             file.write(transcription)
     except OSError as e:
         print('Access-error on file "' + config.transcript_path + 'or' + config.audio_path + '"! \n' + str(e))
-        time.sleep(1)
+        return
     print("transcription complete")
     transcription_complete = True
 

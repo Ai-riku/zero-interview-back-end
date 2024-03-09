@@ -115,10 +115,6 @@ def stop_AVrecording(filename="test"):
     print("elapsed time " + str(elapsed_time))
     print("recorded fps " + str(recorded_fps))
     video_thread.stop() 
-
-    # Makes sure the threads have finished
-    while threading.active_count() > 3:
-        time.sleep(1)
     
     # Merging audio and video signal    
     video_file_path = config.temp_video_path
@@ -146,4 +142,18 @@ def video_capture():
     stop_AVrecording(config.video_path)
     file_manager()
 
+def video_capture_streamlit():
+    record_duration = 5.0
+    start_AVrecording()
+    start_time = time.time()
+    while (time.time() - start_time) < record_duration:
+        frame = video_thread.current_frame
+        if frame is not None:
+            ret, buffer = cv2.imencode('.jpg',frame)
+            frame = buffer.tobytes()
+            yield False, frame
+    stop_AVrecording(config.video_path)
+    file_manager()
+    yield True, frame
+    
 
