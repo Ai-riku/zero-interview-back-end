@@ -36,8 +36,19 @@ To experience the full capabilities of the Zero Interview AI Application, please
 
 To install the necessary dependencies for the project, run the following commands:
 
+You need to install HomeBrew, since PyAudio and FFmpeg need additional dependencies.
+
 ```bash
-pip install --upgrade pip
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+brew install portaudio
+brew install ffmpeg
+```
+
+Now you can run the following
+
+```bash
+pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 
