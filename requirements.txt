@@ -1,0 +1,9 @@
+Flask
+opencv-python
+PyAudio
+moviepy
+streamlit
+numpy
+openai
+python-dotenv
+ffmpeg
