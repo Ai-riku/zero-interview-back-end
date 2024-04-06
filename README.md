@@ -51,6 +51,3 @@ flask run
 
 This command will launch the Flask server, enabling the backend component of the Zero Interview AI Application.
 
-## Contributing
-
-We welcome contributions to the Zero Interview Back End! Please feel free to submit pull requests or open issues to propose new features, report bugs, or discuss improvements.
