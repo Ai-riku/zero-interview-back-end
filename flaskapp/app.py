@@ -1,7 +1,7 @@
 from flask import Flask, render_template, Response
-from util import *
+from util import interview, audio_transcript_complete, getTranscript
 
-app=Flask(__name__)
+app = Flask(__name__)
 
 @app.route('/')
 def index():
