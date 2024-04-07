@@ -5,6 +5,7 @@ import os
 
 load_dotenv()
 
+
 def prompt_to_text(prompt):
     PROMPT_MESSAGES = [
         {
@@ -23,16 +24,18 @@ def prompt_to_text(prompt):
     print(result.choices[0].message.content)
     return result.choices[0].message.content
 
+
 def transcribe(audio_path):
     client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
-    audio_file= open(audio_path, "rb")
+    audio_file = open(audio_path, "rb")
     transcription = client.audio.transcriptions.create(
-        model="whisper-1", 
+        model="whisper-1",
         file=audio_file
     )
     print(transcription.text)
     return transcription.text
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     transcribe()
