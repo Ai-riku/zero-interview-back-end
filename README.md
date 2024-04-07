@@ -57,6 +57,7 @@ pip install -r requirements.txt
 To start the backend server, execute:
 
 ```bash
+cd flaskapp
 flask run
 ```
 
