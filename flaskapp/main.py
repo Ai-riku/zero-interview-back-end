@@ -60,20 +60,20 @@ def main():
             image_container.image(np_frame, channels="BGR")
 
         with st.spinner('Transcribing...'):
-            while not os.path.exists(config.audio_path):
+            while not os.path.exists(config.AUDIO_PATH):
                 time.sleep(1)
             try:
-                transcription = transcribe(config.audio_path)
-                with open(config.transcript_path, 'w') as file:
+                transcription = transcribe(config.AUDIO_PATH)
+                with open(config.TRANSCRIPT_PATH, 'w') as file:
                     file.write(transcription)
             except OSError as e:
                 print('Access-error on file "'
-                      + config.transcript_path
-                      + 'or' + config.audio_path
+                      + config.TRANSCRIPT_PATH
+                      + 'or' + config.AUDIO_PATH
                       + '"! \n' + str(e))
             st.subheader('Transcription:')
             st.markdown(transcription)
-            removeFile(config.transcript_path)
+            removeFile(config.TRANSCRIPT_PATH)
             st.button('Reset', type="primary", on_click=set_stage, args=(0,))
 
 

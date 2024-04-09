@@ -12,13 +12,13 @@ def interview():
     yield from video_capture()
     try:
         print("attempting transcription")
-        transcription = transcribe(config.audio_path)
-        with open(config.transcript_path, 'w') as file:
+        transcription = transcribe(config.AUDIO_PATH)
+        with open(config.TRANSCRIPT_PATH, 'w') as file:
             file.write(transcription)
     except OSError as e:
         print('Access-error on file "'
-              + config.transcript_path
-              + 'or' + config.audio_path
+              + config.TRANSCRIPT_PATH
+              + 'or' + config.AUDIO_PATH
               + '"! \n' + str(e))
         return
     print("transcription complete")
@@ -27,8 +27,8 @@ def interview():
 
 def getTranscript():
     print("getTranscript Called")
-    if os.path.exists(config.transcript_path):
-        with open(config.transcript_path, 'r') as file:
+    if os.path.exists(config.TRANSCRIPT_PATH):
+        with open(config.TRANSCRIPT_PATH, 'r') as file:
             transcription = file.read()
         return transcription
 
