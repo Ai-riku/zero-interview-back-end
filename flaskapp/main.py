@@ -1,13 +1,15 @@
 import streamlit as st
 import numpy as np
 import cv2
-import config
 import time
 import os
 
 from openai_util import prompt_to_text, transcribe
 from av_util import video_capture_streamlit
 from util import removeFile
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def main():
@@ -60,20 +62,20 @@ def main():
             image_container.image(np_frame, channels="BGR")
 
         with st.spinner('Transcribing...'):
-            while not os.path.exists(config.AUDIO_PATH):
+            while not os.path.exists(os.environ["AUDIO_PATH"]):
                 time.sleep(1)
             try:
-                transcription = transcribe(config.AUDIO_PATH)
-                with open(config.TRANSCRIPT_PATH, 'w') as file:
+                transcription = transcribe(os.environ["AUDIO_PATH"])
+                with open(os.environ["TRANSCRIPT_PATH"], 'w') as file:
                     file.write(transcription)
             except OSError as e:
                 print('Access-error on file "'
-                      + config.TRANSCRIPT_PATH
-                      + 'or' + config.AUDIO_PATH
+                      + os.environ["TRANSCRIPT_PATH"]
+                      + 'or' + os.environ["AUDIO_PATH"]
                       + '"! \n' + str(e))
             st.subheader('Transcription:')
             st.markdown(transcription)
-            removeFile(config.TRANSCRIPT_PATH)
+            removeFile(os.environ["TRANSCRIPT_PATH"])
             st.button('Reset', type="primary", on_click=set_stage, args=(0,))
 
 

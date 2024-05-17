@@ -9,3 +9,4 @@ openai
 python-dotenv
 ffmpeg
 flake8
+flask-cors

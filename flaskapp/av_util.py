@@ -1,5 +1,6 @@
 from __future__ import print_function, division
 from moviepy.editor import VideoFileClip, AudioFileClip
+from dotenv import load_dotenv
 
 import cv2
 import pyaudio
@@ -7,11 +8,13 @@ import wave
 import threading
 import time
 import os
-import config
+
+load_dotenv()
 
 
 class VideoRecorder():
-    def __init__(self, name=config.TEMP_VIDEO_PATH, camindex=0, fourcc="MJPG"):
+    def __init__(self, name=os.environ["TEMP_VIDEO_PATH"],
+                 camindex=0, fourcc="MJPG"):
         self.open = True
         self.device_index = camindex
         self.video_filename = name
@@ -52,7 +55,7 @@ class VideoRecorder():
 
 class AudioRecorder():
     def __init__(self,
-                 filename=config.AUDIO_PATH,
+                 filename=os.environ["AUDIO_PATH"],
                  rate=44100,
                  fpb=1024,
                  channels=2):
@@ -131,8 +134,8 @@ def stop_AVrecording(filename="test"):
     video_thread.stop()
 
     # Merging audio and video signal
-    video_file_path = config.TEMP_VIDEO_PATH
-    audio_file_path = config.AUDIO_PATH
+    video_file_path = os.environ["TEMP_VIDEO_PATH"]
+    audio_file_path = os.environ["AUDIO_PATH"]
     video_clip = VideoFileClip(video_file_path).set_fps(recorded_fps)
     audio_clip = AudioFileClip(audio_file_path)
     synchronized_clip = video_clip.set_audio(audio_clip)
@@ -142,8 +145,8 @@ def stop_AVrecording(filename="test"):
 
 
 def file_manager(filepath="test"):
-    if os.path.exists(config.TEMP_VIDEO_PATH):
-        os.remove(config.TEMP_VIDEO_PATH)
+    if os.path.exists(os.environ["TEMP_VIDEO_PATH"]):
+        os.remove(os.environ["TEMP_VIDEO_PATH"])
 
 
 def video_capture():
@@ -157,7 +160,7 @@ def video_capture():
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    stop_AVrecording(config.VIDEO_PATH)
+    stop_AVrecording(os.environ["VIDEO_PATH"])
     file_manager()
 
 
@@ -171,6 +174,6 @@ def video_capture_streamlit():
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield False, frame
-    stop_AVrecording(config.VIDEO_PATH)
+    stop_AVrecording(os.environ["VIDEO_PATH"])
     file_manager()
     yield True, frame
